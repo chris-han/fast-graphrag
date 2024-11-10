@@ -21,6 +21,7 @@ class OllamaAILLMService(OpenAILLMService):
     def __post_init__(self):
         # Patch the OpenAI client with instructor
         ollama_client = AsyncOpenAI(base_url=self.base_url, api_key="ollama")
+        # self.llm_async_client: instructor.AsyncInstructor = instructor.from_openai(ollama_client,mode=instructor.Mode.PARALLEL_TOOLS)
         self.llm_async_client: instructor.AsyncInstructor = instructor.from_openai(ollama_client)
         logger.debug("Initialized OllamaAILLMService with patched OpenAI client.")
 

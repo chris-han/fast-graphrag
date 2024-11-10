@@ -36,8 +36,9 @@ async def format_and_send_prompt(
     # Format the prompt with the supplied arguments
     formatted_prompt = prompt.format(**format_kwargs)
 
+    system_prompt = "Only answer in JSON."
     # Send the formatted prompt to the LLM
-    return await llm.send_message(prompt=formatted_prompt, response_model=response_model, **args)
+    return await llm.send_message(prompt=formatted_prompt, response_model=response_model, system_prompt=system_prompt, **args)
 
 
 @dataclass

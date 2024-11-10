@@ -29,7 +29,7 @@ class OpenAILLMService(BaseLLMService):
 
     def __post_init__(self):
         logger.debug("Initialized OpenAILLMService with patched OpenAI client.")
-        self.llm_async_client: instructor.AsyncInstructor = instructor.from_openai(AsyncOpenAI())
+        self.llm_async_client: instructor.AsyncInstructor = instructor.from_openai(AsyncOpenAI(),mode=instructor.Mode.PARALLEL_TOOLS)
 
     @retry(
         stop=stop_after_attempt(3),
@@ -77,9 +77,7 @@ class OpenAILLMService(BaseLLMService):
         llm_response: GTResponseModel = await self.llm_async_client.chat.completions.create(
             model=model,
             messages=messages,  # type: ignore
-            response_model=response_model.Model
-            if response_model and issubclass(response_model, BTResponseModel)
-            else response_model,
+            response_model=response_model.Model if response_model and issubclass(response_model, BTResponseModel) else response_model,                    
             **kwargs,
         )
 
